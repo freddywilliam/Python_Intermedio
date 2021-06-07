@@ -26,43 +26,44 @@ def importar_palabra():
     return dic_palabra
 
 def palabra_usuario():
+    print(""" 
+        -------------
+        AHORCADO ALPHA
+        -------------
+
+    REGLAS
+    _______
+
+    -Cada vez que repitas una palabra pierdes 1 punto.
+
+    
+            QUE EMPIEZE EL JUEGO
+            _____________________
+
+    Ingresa tu primera letra para empezar
+    
+    """)
     letra_ingresada = str(input("Escribe tu letra: ")).lower()
     dic_letras_ingrsadas_numeradas = dict(enumerate(letra_ingresada))
     dic_letras_ingrsadas_numeradas = list(dic_letras_ingrsadas_numeradas.values())
-   
 
     return dic_letras_ingrsadas_numeradas
 
-
 def comparacion_listas_cierre(a, b):
     return Counter(a) == Counter(b)
-
+ 
+def comparacion(letra_usuario, palabra_importada, letra_adivinada, palabra_rayada, puntaje):
     
-def comparacion(letra_usuario, palabra_importada, letra_adivinada, palabra_rayada):
-    
-
-    while len(palabra_rayada) < len(palabra_importada):
-        for i in range(len(palabra_importada)):
-
-            palabra_rayada.append(' _ ')
-        
-       
-
+    creacion_rayas =[palabra_rayada.append(' _ ') for i in range(len(palabra_importada)) if len(palabra_rayada) < len(palabra_importada)]
+  
     for i in range(len(palabra_importada)):
-
-        
+       
         if palabra_importada[i]== letra_usuario[0]:
-            os.system("cls")
+            
             letra_adivinada.append(palabra_importada[i])
             palabra_rayada[i]= letra_usuario
-            print(palabra_rayada)
-        
-        # else:
-        #     os.system("cls")
-
-    
-        
-    return letra_adivinada, palabra_rayada
+                        
+    return letra_adivinada, palabra_rayada, puntaje
 
 def letras_repetidas(lista_letra_usuario, mensaje):
     
@@ -77,30 +78,34 @@ def letras_repetidas(lista_letra_usuario, mensaje):
         else:
             mensaje = 1
             
-            
     return mensaje
 
 def run():
     os.system("cls")
     palabra_importada = importar_palabra()
-
-    # letra_usuario_rayas = palabra_usuario()
-    # rayas(palabra_importada, letra_usuario_rayas)
     palabra_rayada = []
-
     lista_letra_usuario = []
-
     letra_adivinada = []
     comparacion_listas_cierre_valor = 0
-
     mensaje = 0
+    puntaje = 20
 
-  
-    for i in range(10):
+    for i in range(21):
+        if i == 20:
+            print("""
+            
+            PERDISTE!!
+            
+            """)
         
-        print(" ")
-        letra_usuario = palabra_usuario()
+        print("Tienes", puntaje, "Intentos.")
+        print("""
+        
+        
+         """)
 
+        print(palabra_rayada)
+        letra_usuario = palabra_usuario()
         lista_letra_usuario.append(letra_usuario)
         letras_repetidas(lista_letra_usuario, mensaje)
 
@@ -108,20 +113,21 @@ def run():
             print("REPETIDA")
             letras_repetidas(lista_letra_usuario, mensaje)
             mensaje = 0 
-            
+            puntaje -= 1
+            os.system("cls")
         
         if letras_repetidas(lista_letra_usuario, mensaje) == 0: 
-    
-            comparacion(letra_usuario, palabra_importada, letra_adivinada, palabra_rayada)
+            comparacion(letra_usuario, palabra_importada, letra_adivinada, palabra_rayada, puntaje)
             comparacion_listas_cierre_valor = comparacion_listas_cierre(palabra_importada, letra_adivinada)
-            # print(letra_adivinada)
             mensaje = 0
-
+            os.system("cls")
             if comparacion_listas_cierre_valor == True:
                 print("GANASTE")
                 break
             else:
                 continue
+    os.system("cls")
         
+     
 if __name__ == '__main__':
     run()
